@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alosious Paul | Cybersecurity Portfolio</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #1B2A4A;
+    --navy-light: #243660;
+    --accent: #2E75B6;
+    --accent-light: #4A90D9;
+    --accent-bg: #EEF3FA;
+    --text: #1a1a2e;
+    --text-muted: #555;
+    --bg: #ffffff;
+    --bg-secondary: #f7f9fc;
+    --border: #e2e8f0;
+    --green: #10b981;
+    --amber: #f59e0b;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(27,42,74,0.97);
+    backdrop-filter: blur(8px);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-brand {
+    color: #fff; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.5px;
+    text-decoration: none;
+  }
+  .nav-brand span { color: var(--accent-light); }
+  .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem;
+    transition: color 0.2s; letter-spacing: 0.3px;
+  }
+  .nav-links a:hover { color: #fff; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--navy) 0%, #0f1d38 50%, #162240 100%);
+    display: flex; align-items: center;
+    padding: 80px 2rem 2rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      radial-gradient(circle at 20% 50%, rgba(46,117,182,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(46,117,182,0.1) 0%, transparent 40%);
+  }
+  .hero-grid {
+    max-width: 1100px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: center; position: relative; z-index: 1;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(46,117,182,0.2); border: 1px solid rgba(46,117,182,0.4);
+    color: #93c5fd; padding: 6px 14px; border-radius: 100px;
+    font-size: 0.8rem; font-weight: 500; letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+  }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.2)} }
+  .hero h1 {
+    font-size: 3rem; font-weight: 800; color: #fff;
+    line-height: 1.15; margin-bottom: 0.5rem;
+  }
+  .hero h1 span { color: var(--accent-light); }
+  .hero-sub {
+    font-size: 1.15rem; color: rgba(255,255,255,0.55);
+    margin-bottom: 1.5rem; font-weight: 400;
+  }
+  .hero-desc { color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 2rem; max-width: 480px; }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    padding: 12px 24px; border-radius: 8px; text-decoration: none;
+    font-weight: 600; font-size: 0.95rem; transition: background 0.2s, transform 0.15s;
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent; color: #fff;
+    padding: 12px 24px; border-radius: 8px; text-decoration: none;
+    font-weight: 600; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.3);
+    transition: border-color 0.2s, background 0.2s, transform 0.15s; cursor: pointer;
+  }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); transform: translateY(-1px); }
+
+  /* Hero right — terminal card */
+  .terminal {
+    background: #0d1117; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden; font-family: 'Courier New', monospace;
+  }
+  .terminal-bar {
+    background: #1c2128; padding: 10px 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+  .terminal-title { color: rgba(255,255,255,0.4); font-size: 0.8rem; margin-left: 8px; font-family: sans-serif; }
+  .terminal-body { padding: 1.5rem; font-size: 0.85rem; line-height: 1.9; }
+  .t-comment { color: #6e7681; }
+  .t-prompt { color: #58a6ff; }
+  .t-cmd { color: #e6edf3; }
+  .t-output { color: #3fb950; }
+  .t-warn { color: #d29922; }
+  .t-accent { color: #79c0ff; }
+  .t-cursor { display: inline-block; width: 8px; height: 1em; background: #58a6ff; vertical-align: middle; animation: blink 1s infinite; }
+  @keyframes blink { 0%,50%{opacity:1} 51%,100%{opacity:0} }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-size: 2rem; font-weight: 800; color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+  .section-desc { color: var(--text-muted); font-size: 1rem; max-width: 560px; margin-bottom: 3rem; }
+
+  /* ABOUT */
+  .about { background: var(--bg-secondary); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .about-text p { color: var(--text-muted); margin-bottom: 1rem; line-height: 1.8; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+  .stat-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1rem 1.25rem;
+  }
+  .stat-num { font-size: 1.8rem; font-weight: 800; color: var(--navy); }
+  .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+  .about-right { display: flex; flex-direction: column; gap: 1rem; }
+  .info-row {
+    display: flex; gap: 1rem; align-items: flex-start;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1rem 1.25rem;
+  }
+  .info-icon {
+    width: 38px; height: 38px; border-radius: 8px;
+    background: var(--accent-bg); display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 1.1rem;
+  }
+  .info-label { font-size: 0.78rem; color: var(--text-muted); }
+  .info-val { font-size: 0.95rem; font-weight: 600; color: var(--navy); }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+  .skill-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem;
+    transition: box-shadow 0.2s, transform 0.2s; cursor: default;
+  }
+  .skill-card:hover { box-shadow: 0 8px 24px rgba(27,42,74,0.1); transform: translateY(-2px); }
+  .skill-icon {
+    width: 46px; height: 46px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; margin-bottom: 1rem;
+  }
+  .skill-icon.blue { background: #EEF3FA; }
+  .skill-icon.green { background: #ecfdf5; }
+  .skill-icon.amber { background: #fffbeb; }
+  .skill-icon.red { background: #fef2f2; }
+  .skill-card h3 { font-size: 0.95rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 0.75rem; padding: 3px 10px; border-radius: 100px;
+    background: var(--accent-bg); color: var(--accent); font-weight: 500;
+    border: 1px solid rgba(46,117,182,0.2);
+  }
+
+  /* PROJECTS */
+  .projects { background: var(--bg-secondary); }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+  .project-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .project-card:hover { box-shadow: 0 8px 24px rgba(27,42,74,0.1); transform: translateY(-2px); }
+  .project-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+  .project-badge {
+    font-size: 0.72rem; font-weight: 600; padding: 4px 10px;
+    border-radius: 100px; letter-spacing: 0.3px;
+  }
+  .badge-blue { background: var(--accent-bg); color: var(--accent); }
+  .badge-green { background: #ecfdf5; color: #059669; }
+  .badge-amber { background: #fffbeb; color: #b45309; }
+  .badge-purple { background: #f3f0ff; color: #6d28d9; }
+  .project-icon { font-size: 1.8rem; }
+  .project-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+  .project-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; flex: 1; margin-bottom: 1rem; }
+  .project-tech { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
+  .tech-pill {
+    font-size: 0.72rem; padding: 3px 10px; border-radius: 4px;
+    background: #f1f5f9; color: #475569; font-family: monospace; font-weight: 600;
+  }
+  .project-link {
+    font-size: 0.85rem; color: var(--accent); text-decoration: none;
+    font-weight: 600; display: inline-flex; align-items: center; gap: 4px;
+    margin-top: auto;
+  }
+  .project-link:hover { color: var(--accent-light); }
+
+  /* EXPERIENCE */
+  .exp-timeline { display: flex; flex-direction: column; gap: 0; }
+  .exp-item { display: grid; grid-template-columns: 200px 1fr; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--border); }
+  .exp-item:last-child { border-bottom: none; }
+  .exp-date { color: var(--text-muted); font-size: 0.85rem; padding-top: 4px; }
+  .exp-company { font-size: 0.8rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .exp-role { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin: 2px 0 8px; }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .exp-bullets li { font-size: 0.88rem; color: var(--text-muted); padding-left: 1rem; position: relative; line-height: 1.7; }
+  .exp-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 0.7rem; top: 4px; }
+
+  /* EDUCATION */
+  .edu { background: var(--bg-secondary); }
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .edu-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem;
+  }
+  .edu-card.featured { border-color: var(--accent); border-width: 2px; }
+  .edu-degree { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .edu-school { font-size: 0.88rem; color: var(--accent); font-weight: 600; margin-bottom: 4px; }
+  .edu-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem; }
+  .edu-units { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* CERTS */
+  .cert-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+  .cert-item {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1rem 1.25rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .cert-logo {
+    width: 44px; height: 44px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+  }
+  .cert-name { font-size: 0.9rem; font-weight: 700; color: var(--navy); }
+  .cert-issuer { font-size: 0.78rem; color: var(--text-muted); }
+  .cert-status {
+    margin-left: auto; font-size: 0.72rem; font-weight: 600;
+    padding: 3px 10px; border-radius: 100px; flex-shrink: 0;
+  }
+  .status-done { background: #ecfdf5; color: #059669; }
+  .status-progress { background: #fffbeb; color: #b45309; }
+
+  /* CONTACT */
+  .contact { background: var(--navy); }
+  .contact .section-title { color: #fff; }
+  .contact .section-desc { color: rgba(255,255,255,0.6); }
+  .contact .section-label { color: var(--accent-light); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 1rem;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 1rem 1.25rem; text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .contact-link:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+  .contact-link-icon {
+    width: 40px; height: 40px; border-radius: 8px;
+    background: rgba(46,117,182,0.3); display: flex; align-items: center;
+    justify-content: center; font-size: 1.2rem; flex-shrink: 0;
+  }
+  .contact-link-label { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+  .contact-link-val { font-size: 0.95rem; font-weight: 600; color: #fff; }
+  .contact-cta {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 2rem;
+  }
+  .contact-cta h3 { color: #fff; font-size: 1.1rem; margin-bottom: 0.75rem; }
+  .contact-cta p { color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.7; }
+
+  /* FOOTER */
+  footer {
+    background: #0f1d38; padding: 1.5rem 2rem;
+    text-align: center; color: rgba(255,255,255,0.35); font-size: 0.82rem;
+  }
+
+  /* SCROLL */
+  html { scroll-behavior: smooth; }
+
+  @media (max-width: 768px) {
+    .hero-grid, .about-grid, .contact-grid, .edu-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero h1 { font-size: 2rem; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    nav .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">Alosious <span>Paul</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-tag">Available for Internship &nbsp;·&nbsp; S2-2026</div>
+      <h1>Alosious<br><span>Paul</span></h1>
+      <p class="hero-sub">Cybersecurity Student · Macquarie University</p>
+      <p class="hero-desc">Master of IT student specialising in Cybersecurity — focused on network security, threat analysis, vulnerability research, and building secure systems.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-primary">View Projects</a>
+        <a href="#contact" class="btn-outline">Get in Touch</a>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <span class="terminal-title">alosious@kali:~</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-comment"># whoami</span></div>
+        <div><span class="t-output">cybersecurity_student</span></div>
+        <br>
+        <div><span class="t-prompt">$</span> <span class="t-cmd">cat profile.txt</span></div>
+        <div><span class="t-accent">Name:</span> <span class="t-cmd">Alosious Paul</span></div>
+        <div><span class="t-accent">Degree:</span> <span class="t-cmd">MIT (Cybersecurity)</span></div>
+        <div><span class="t-accent">University:</span> <span class="t-cmd">Macquarie University</span></div>
+        <div><span class="t-accent">Location:</span> <span class="t-cmd">Parramatta, NSW</span></div>
+        <br>
+        <div><span class="t-prompt">$</span> <span class="t-cmd">ls skills/</span></div>
+        <div><span class="t-output">network_security&nbsp;&nbsp;forensics</span></div>
+        <div><span class="t-output">vulnerability_analysis&nbsp;&nbsp;nist</span></div>
+        <div><span class="t-output">python&nbsp;&nbsp;wireshark&nbsp;&nbsp;kali_linux</span></div>
+        <br>
+        <div><span class="t-prompt">$</span> <span class="t-cmd">echo $STATUS</span></div>
+        <div><span class="t-warn">SEEKING_INTERNSHIP_S2_2026</span></div>
+        <div><span class="t-prompt">$</span> <span class="t-cursor"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="section-label">About Me</div>
+    <div class="about-grid">
+      <div class="about-text">
+        <h2 class="section-title">Who I Am</h2>
+        <p>I'm a Master of Information Technology student at Macquarie University, specialising in Cybersecurity. Originally from India, I completed my Bachelor of Computer Applications before moving to Australia to deepen my expertise in information security.</p>
+        <p>My academic focus spans network security, cryptography, digital forensics, vulnerability analysis, and cyber risk management. I'm passionate about building secure systems and understanding how they break.</p>
+        <p>I'm actively seeking a cybersecurity internship for Semester 2, 2026 to apply my skills in a real-world security environment.</p>
+        <div class="about-stats">
+          <div class="stat-card">
+            <div class="stat-num">6+</div>
+            <div class="stat-label">Security Projects</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">74.35</div>
+            <div class="stat-label">Current WAM</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">MIT</div>
+            <div class="stat-label">Cybersecurity Major</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">2026</div>
+            <div class="stat-label">Graduating Year</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-right">
+        <div class="info-row">
+          <div class="info-icon">🎓</div>
+          <div>
+            <div class="info-label">Current Study</div>
+            <div class="info-val">Master of Information Technology</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">🏫</div>
+          <div>
+            <div class="info-label">University</div>
+            <div class="info-val">Macquarie University, Sydney NSW</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">🔐</div>
+          <div>
+            <div class="info-label">Specialisation</div>
+            <div class="info-val">Cybersecurity</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">📍</div>
+          <div>
+            <div class="info-label">Location</div>
+            <div class="info-val">Parramatta, NSW 2150</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">📧</div>
+          <div>
+            <div class="info-label">Email</div>
+            <div class="info-val">alosiousmpaul107@gmail.com</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">📱</div>
+          <div>
+            <div class="info-label">Phone</div>
+            <div class="info-val">0470 281 365</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">Expertise</div>
+    <h2 class="section-title">Technical Skills</h2>
+    <p class="section-desc">Core competencies built through academic study, hands-on labs, and practical projects.</p>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon blue">🛡️</div>
+        <h3>Security Concepts</h3>
+        <div class="skill-tags">
+          <span class="tag">Network Security</span>
+          <span class="tag">Threat Modelling</span>
+          <span class="tag">CIA Triad</span>
+          <span class="tag">Risk Assessment</span>
+          <span class="tag">Vulnerability Analysis</span>
+          <span class="tag">Cryptography</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon green">🔧</div>
+        <h3>Tools & Platforms</h3>
+        <div class="skill-tags">
+          <span class="tag">Wireshark</span>
+          <span class="tag">Kali Linux</span>
+          <span class="tag">Nmap</span>
+          <span class="tag">Metasploit</span>
+          <span class="tag">SIEM</span>
+          <span class="tag">Firewall Config</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon amber">📋</div>
+        <h3>Frameworks & Compliance</h3>
+        <div class="skill-tags">
+          <span class="tag">NIST CSF</span>
+          <span class="tag">ISO 27001</span>
+          <span class="tag">Digital Forensics</span>
+          <span class="tag">Incident Response</span>
+          <span class="tag">Governance</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon red">💻</div>
+        <h3>Programming & Networking</h3>
+        <div class="skill-tags">
+          <span class="tag">Python</span>
+          <span class="tag">SQL</span>
+          <span class="tag">Linux CLI</span>
+          <span class="tag">TCP/IP</span>
+          <span class="tag">OSPF / BGP</span>
+          <span class="tag">VLANs / ACLs</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="container">
+    <div class="section-label">My Work</div>
+    <h2 class="section-title">Academic Projects</h2>
+    <p class="section-desc">Security projects completed as part of my MIT Cybersecurity program at Macquarie University.</p>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-top">
+          <span class="project-badge badge-blue">Machine Learning</span>
+          <span class="project-icon">🔍</span>
+        </div>
+        <h3>Anomaly Detection System</h3>
+        <p>Designed a network anomaly detection model to identify irregular traffic patterns indicative of intrusions or insider threats. Applied statistical and ML techniques to distinguish baselines from anomalous events.</p>
+        <div class="project-tech">
+          <span class="tech-pill">Python</span>
+          <span class="tech-pill">Scikit-learn</span>
+          <span class="tech-pill">Wireshark</span>
+          <span class="tech-pill">Pandas</span>
+        </div>
+        <a href="https://github.com/alosiousmpaul" class="project-link">View on GitHub →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-top">
+          <span class="project-badge badge-green">Compliance</span>
+          <span class="project-icon">🗺️</span>
+        </div>
+        <h3>Cybersecurity Roadmap – NIST Framework</h3>
+        <p>Developed a comprehensive cybersecurity roadmap for a simulated organisation using the NIST CSF (Identify, Protect, Detect, Respond, Recover), with governance principles and ethical recommendations.</p>
+        <div class="project-tech">
+          <span class="tech-pill">NIST CSF</span>
+          <span class="tech-pill">Risk Register</span>
+          <span class="tech-pill">ISO 27001</span>
+        </div>
+        <a href="https://github.com/alosiousmpaul" class="project-link">View Write-up →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-top">
+          <span class="project-badge badge-amber">Networking</span>
+          <span class="project-icon">🌐</span>
+        </div>
+        <h3>Network Infrastructure Design & Hardening</h3>
+        <p>Built and configured complex network infrastructures with OSPF/BGP routing, VLANs, ACLs, and firewall rules. Designed high-speed switching topologies optimised for performance and scalability.</p>
+        <div class="project-tech">
+          <span class="tech-pill">OSPF</span>
+          <span class="tech-pill">BGP</span>
+          <span class="tech-pill">VLANs</span>
+          <span class="tech-pill">ACLs</span>
+          <span class="tech-pill">Cisco</span>
+        </div>
+        <a href="https://github.com/alosiousmpaul" class="project-link">View on GitHub →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-top">
+          <span class="project-badge badge-purple">AI / ML</span>
+          <span class="project-icon">🤖</span>
+        </div>
+        <h3>AI Model Training for Security Data Analysis</h3>
+        <p>Trained supervised ML models to classify malicious vs benign network events. Applied feature engineering, preprocessing, and cross-validation to improve accuracy of security-relevant predictions.</p>
+        <div class="project-tech">
+          <span class="tech-pill">Python</span>
+          <span class="tech-pill">TensorFlow</span>
+          <span class="tech-pill">Feature Engineering</span>
+        </div>
+        <a href="https://github.com/alosiousmpaul" class="project-link">View on GitHub →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-top">
+          <span class="project-badge badge-blue">Exploitation</span>
+          <span class="project-icon">⚔️</span>
+        </div>
+        <h3>Software & Network Vulnerability Analysis</h3>
+        <p>Analysed exploitation techniques for software and network systems. Investigated OS and file system attack surfaces, designed mitigations, and evaluated forensic tools and recovery mechanisms.</p>
+        <div class="project-tech">
+          <span class="tech-pill">Kali Linux</span>
+          <span class="tech-pill">Metasploit</span>
+          <span class="tech-pill">Forensics</span>
+          <span class="tech-pill">Nmap</span>
+        </div>
+        <a href="https://github.com/alosiousmpaul" class="project-link">View Write-up →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-top">
+          <span class="project-badge badge-green">Algorithms</span>
+          <span class="project-icon">⚙️</span>
+        </div>
+        <h3>Scheduling Algorithm Design</h3>
+        <p>Implemented and benchmarked CPU scheduling algorithms (FCFS, SJF, Round Robin, Priority). Evaluated performance trade-offs under simulated high-load conditions relevant to secure OS design.</p>
+        <div class="project-tech">
+          <span class="tech-pill">Python</span>
+          <span class="tech-pill">OS Concepts</span>
+          <span class="tech-pill">Performance Analysis</span>
+        </div>
+        <a href="https://github.com/alosiousmpaul" class="project-link">View on GitHub →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label">Work History</div>
+    <h2 class="section-title">Experience</h2>
+    <p class="section-desc">Professional experience demonstrating compliance, data handling, and security awareness.</p>
+    <div class="exp-timeline">
+      <div class="exp-item">
+        <div>
+          <div class="exp-date">Oct 2025 – Present</div>
+        </div>
+        <div>
+          <div class="exp-company">Woolworths · Sydney, NSW</div>
+          <div class="exp-role">Team Member – Retail Operations</div>
+          <ul class="exp-bullets">
+            <li>Handled sensitive customer data and payment transactions with strict adherence to privacy and security protocols.</li>
+            <li>Identified and escalated security risks, contributing to loss prevention outcomes.</li>
+            <li>Maintained WHS compliance and followed company data handling procedures and reporting chains.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exp-item">
+        <div>
+          <div class="exp-date">Mar 2025 – Oct 2025</div>
+        </div>
+        <div>
+          <div class="exp-company">Pickles Auction · Sydney, NSW</div>
+          <div class="exp-role">Vehicle Detailing Technician</div>
+          <ul class="exp-bullets">
+            <li>Followed strict MSDS regulatory compliance — real-world risk management framework application.</li>
+            <li>Maintained accurate safety documentation records, reinforcing compliance discipline.</li>
+            <li>Adhered to access control procedures in high-value asset environments.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exp-item">
+        <div>
+          <div class="exp-date">Mar 2019 – Oct 2019</div>
+        </div>
+        <div>
+          <div class="exp-company">Azad Restaurant · India</div>
+          <div class="exp-role">Waiter / Kitchen Hand</div>
+          <ul class="exp-bullets">
+            <li>Delivered customer service under pressure, building communication and conflict resolution skills.</li>
+            <li>Maintained hygiene and safety standards in a compliance-driven environment.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="edu" id="education">
+  <div class="container">
+    <div class="section-label">Education</div>
+    <h2 class="section-title">Academic Background</h2>
+    <p class="section-desc">Formal qualifications in computing with a specialisation in cybersecurity.</p>
+    <div class="edu-grid">
+      <div class="edu-card featured">
+        <div class="edu-degree">Master of Information Technology</div>
+        <div class="edu-school">Macquarie University · Sydney, NSW</div>
+        <div class="edu-date">Feb 2025 – Present &nbsp;·&nbsp; WAM: 74.35 &nbsp;·&nbsp; Specialisation: Cybersecurity</div>
+        <div class="edu-units">
+          <span class="tag">Network Security</span>
+          <span class="tag">Cryptography</span>
+          <span class="tag">Digital Forensics</span>
+          <span class="tag">Cyber Risk Management</span>
+          <span class="tag">NIST Framework</span>
+        </div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-degree">Bachelor of Computer Applications</div>
+        <div class="edu-school">Mahatma Gandhi University · India</div>
+        <div class="edu-date">Aug 2020 – Aug 2024</div>
+        <div class="edu-units">
+          <span class="tag">Programming</span>
+          <span class="tag">Database Systems</span>
+          <span class="tag">Computer Networks</span>
+          <span class="tag">Operating Systems</span>
+        </div>
+      </div>
+    </div>
+
+    <br><br>
+    <div class="section-label">Certifications</div>
+    <h3 style="font-size:1.3rem;font-weight:700;color:var(--navy);margin-bottom:1.5rem;">Professional Development</h3>
+    <div class="cert-list">
+      <div class="cert-item">
+        <div class="cert-logo" style="background:#ecfdf5;">🟢</div>
+        <div>
+          <div class="cert-name">Introduction to Cybersecurity</div>
+          <div class="cert-issuer">Cisco NetAcad</div>
+        </div>
+        <span class="cert-status status-done">Completed</span>
+      </div>
+      <div class="cert-item">
+        <div class="cert-logo" style="background:#fffbeb;">🟡</div>
+        <div>
+          <div class="cert-name">Google Cybersecurity Certificate</div>
+          <div class="cert-issuer">Google / Coursera</div>
+        </div>
+        <span class="cert-status status-progress">In Progress</span>
+      </div>
+      <div class="cert-item">
+        <div class="cert-logo" style="background:#eff6ff;">🔵</div>
+        <div>
+          <div class="cert-name">CompTIA Security+</div>
+          <div class="cert-issuer">CompTIA</div>
+        </div>
+        <span class="cert-status status-progress">Studying</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-label">Get In Touch</div>
+    <div class="contact-grid">
+      <div>
+        <h2 class="section-title">Let's Connect</h2>
+        <p class="section-desc">I'm actively looking for a cybersecurity internship for S2-2026. If you have an opportunity or just want to connect, reach out.</p>
+        <div class="contact-links">
+          <a href="mailto:alosiousmpaul107@gmail.com" class="contact-link">
+            <div class="contact-link-icon">📧</div>
+            <div>
+              <div class="contact-link-label">Email</div>
+              <div class="contact-link-val">alosiousmpaul107@gmail.com</div>
+            </div>
+          </a>
+          <a href="tel:0470281365" class="contact-link">
+            <div class="contact-link-icon">📱</div>
+            <div>
+              <div class="contact-link-label">Phone</div>
+              <div class="contact-link-val">0470 281 365</div>
+            </div>
+          </a>
+          <a href="https://github.com/alosiousmpaul" class="contact-link" target="_blank">
+            <div class="contact-link-icon">💻</div>
+            <div>
+              <div class="contact-link-label">GitHub</div>
+              <div class="contact-link-val">github.com/alosiousmpaul</div>
+            </div>
+          </a>
+          <a href="https://www.linkedin.com/in/alosiousmpaul" class="contact-link" target="_blank">
+            <div class="contact-link-icon">🔗</div>
+            <div>
+              <div class="contact-link-label">LinkedIn</div>
+              <div class="contact-link-val">linkedin.com/in/alosiousmpaul</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="contact-cta">
+        <h3>Open to Cybersecurity Internships</h3>
+        <p>I'm seeking a part-time or full-time internship placement for Semester 2, 2026 through Macquarie University's COMP8851 program. My project must align with cybersecurity.</p>
+        <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;margin-bottom:1.5rem;line-height:1.7;">Based in Parramatta, NSW — available for in-person placement across Greater Sydney.</p>
+        <a href="mailto:alosiousmpaul107@gmail.com" class="btn-primary" style="display:inline-block;">Send me an email →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Alosious Moonupeediackal Paul · Built for Macquarie University MIT Internship Program</p>
+</footer>
+
+</body>
+</html>
